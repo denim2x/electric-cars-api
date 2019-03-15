@@ -137,7 +137,10 @@ class RESTHandler(RequestHandler):
       self.send_response(400)  # Bad Request
       self.end_headers()
     elif self.body is None:
-      self.end_headers()
+      try:
+        self.end_headers()
+      except AttributeError:
+        pass # more info needed
     else:
       value = self.content_type
       if value == 'json':
@@ -187,6 +190,8 @@ class RESTHandler(RequestHandler):
   def read(self):
     try:
       size = int(self.headers.get('Content-Length'))
+      if size == 0:
+        return False
     except:
       self.send(411)
       return False
@@ -220,7 +225,7 @@ with open(resolve('Vehicles.csv'), newline='') as file:
     
 print('  done')
     
-port = int(env['PORT'])
+port = int(env.get('PORT', '8080'))
 with HTTPServer(('', port), RESTHandler) as self:
   print('Server started at port %s...' % (self.server_port,))
   self.serve_forever()
