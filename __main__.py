@@ -132,7 +132,7 @@ class RESTHandler(RequestHandler):
     self.parts = split(self.path)
     self.body = None
     
-  def __exit__(self, et, ex, tb):
+  def __exit__(self, *err):
     if self.parts is not None:
       self.send_response(400)  # Bad Request
       self.end_headers()
@@ -221,7 +221,7 @@ with open(resolve('Vehicles.csv'), newline='') as file:
 print('  done')
     
 port = int(env['PORT'])
-with HTTPServer(('', port), RESTHandler) as server:
-  print('Server started at port %s...' % (server.server_port,))
-  server.serve_forever()
+with HTTPServer(('', port), RESTHandler) as self:
+  print('Server started at port %s...' % (self.server_port,))
+  self.serve_forever()
   
