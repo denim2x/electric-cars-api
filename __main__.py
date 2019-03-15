@@ -227,6 +227,6 @@ print('  done')
     
 port = int(env.get('PORT', '8080'))
 with HTTPServer(('', port), RESTHandler) as self:
-  print('Server started at port %s...' % (self.server_port,))
+  print('HTTPServer: listening (port %s)...' % (self.server_port,))
   self.serve_forever()
   
